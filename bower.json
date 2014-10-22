@@ -1,0 +1,23 @@
+{
+  "name": "react-consumer",
+  "version": "0.1.0",
+  "authors": [
+    "Tim Mathews <tim@8191.net>"
+  ],
+  "description": "Simple React.js Based Consumer",
+  "main": "dist/",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.11.2"
+  }
+}
