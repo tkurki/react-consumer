@@ -1,0 +1,5 @@
+.DS_Store
+*.db
+*.log
+node_modules
+bower_components
