@@ -7,16 +7,23 @@ An example Signal K consumer using
 Installation
 ------------
 
-If you haven't already, clone signalk/consumer-server.
+If you haven't already, clone signalk/consumer-server. And if you have,
+checkout the serve-deps branch.
+
 ```shell
-$ https://github.com/SignalK/consumer-server.git
+$ git clone https://github.com/SignalK/consumer-server.git
+$ cd consumer-server
+$ git checkout serve-deps
 ```
 
 Then
 
 ```shell
 $ cd consumer-server
-$ bower install --save signalk/react-consumer`
+$ bower install signalk/react-consumer
+$ cd bower_components/react-consumer
+$ bower install
+$ cd ../../
 $ npm start
 ```
 
