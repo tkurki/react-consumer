@@ -27,6 +27,19 @@ $ cd ../../
 $ npm start
 ```
 
+Alternatively, if you don't want to run this using node and the
+consumer-server wrapper, you can use python:
+
+```shell
+$ git clone https://github.com/SignalK/react-consumer.git
+$ cd react-consumer
+$ bower install
+$ cd dist
+$ ln ../bower_components vendor
+$ python -m SimpleHTTPServer 8080
+```
+
+
 You should now have a server running on `http://localhost:8080`. By default
 the consumer assumes there is a Signal K server running on :3000 on the same
 machine.
