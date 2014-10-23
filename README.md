@@ -12,8 +12,6 @@ checkout the serve-deps branch.
 
 ```shell
 $ git clone https://github.com/SignalK/consumer-server.git
-$ cd consumer-server
-$ git checkout serve-deps
 ```
 
 Then
@@ -34,11 +32,8 @@ consumer-server wrapper, you can use python:
 $ git clone https://github.com/SignalK/react-consumer.git
 $ cd react-consumer
 $ bower install
-$ cd dist
-$ ln ../bower_components vendor
 $ python -m SimpleHTTPServer 8080
 ```
-
 
 You should now have a server running on `http://localhost:8080`. By default
 the consumer assumes there is a Signal K server running on :3000 on the same
