@@ -89,7 +89,7 @@ var DataList = React.createClass({
     ];
 
     return (
-      <div class="container-inner">
+      <div className="container-inner">
         <h1>Signal K React Demo</h1>
         <div className="dataList">
           <DataBox name="Location" data={loc} />
