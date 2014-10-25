@@ -61,7 +61,10 @@ span, div {
 .dataList {
   margin: 0 auto;
   max-width: 632px;
+  display: -webkit-flex;
   display: flex;
+  -webkit-flex-direction: row;
   flex-direction: row;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
 }
