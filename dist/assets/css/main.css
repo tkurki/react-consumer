@@ -10,8 +10,7 @@ html, body {
 }
 
 h1 {
-  padding-top: 100px;
-  padding-bottom: 30px;
+  padding: 20px 0;
   font-weight: 100;
   text-transform: uppercase;
   color: #808080;
