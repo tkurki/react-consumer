@@ -1,5 +1,10 @@
+# Git uses this file to determine which files and directories to ignore
+# https://help.github.com/articles/ignoring-files
+
 .DS_Store
 *.db
 *.log
 node_modules
 bower_components
+build
+npm-debug.log
