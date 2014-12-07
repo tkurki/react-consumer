@@ -60,11 +60,7 @@ var DefaultLayout = React.createClass({
         {this.props.children.type.breadcrumb}
       </div>
     ) : (
-      <div className="jumbotron">
-        <div className="container text-center">
-          <h1>React</h1>
-          <p>Complex web apps made easy</p>
-        </div>
+      <div className="container">
       </div>
     );
 
@@ -76,9 +72,8 @@ var DefaultLayout = React.createClass({
         <div className="navbar-footer">
           <div className="container">
             <p className="text-muted">
-              <span>© KriaSoft</span>
+              <span>© Signal K</span>
               <span><Link to="/">Home</Link></span>
-              <span><Link to="/privacy">Privacy</Link></span>
             </p>
           </div>
         </div>

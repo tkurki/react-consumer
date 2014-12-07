@@ -1,10 +1,10 @@
 {
-  "name": "react-starter-kit",
+  "name": "react-consumer",
   "private": true,
-  "version": "0.0.0",
-  "description": "React / Flux  Starter Kit",
-  "repository": "https://github.com/kriasoft/react-starter-kit",
-  "license": "MIT",
+  "version": "0.1.0",
+  "description": "Demonstration Signal K Consumer using React.js",
+  "repository": "https://github.com/signalk/react-consumer",
+  "license": "Apache v2",
   "dependencies": {
     "bootstrap": "^3.3.1",
     "director": "^1.2.3",
