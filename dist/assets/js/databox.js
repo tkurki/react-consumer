@@ -47,7 +47,6 @@ var DataList = React.createClass({
     var that = this;
       var handleTree = function(data) {
       var s = data.self;
-      console.log(data.vessels[s]);
       that.setState({data: data.vessels[s]});
     };
       if (typeof Primus != 'undefined') {
