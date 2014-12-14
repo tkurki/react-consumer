@@ -23,8 +23,8 @@ var DataList = React.createClass({
   getInitialState: function() {
     return {data: {
       "navigation": {
-        "courseOverGroundMagnetic": null,
-        "speedOverGround": null,
+        "courseOverGroundTrue": {value:null},
+        "speedOverGround": {value:null},
         "position": {
           "latitude": null,
           "longitiude": null
@@ -32,8 +32,8 @@ var DataList = React.createClass({
       },
       "environment": {
         "wind": {
-          "directionApparent": null,
-          "speedApparent": null
+          "angleApparent": {value:null},
+          "speedApparent": {value:null}
         },
         "depth": {
           "belowTransducer": {
@@ -83,12 +83,12 @@ var DataList = React.createClass({
     ];
 
     var cog = [
-      {value: this.state.data.navigation.courseOverGroundMagnetic,
+      {value: this.state.data.navigation.courseOverGroundTrue.value,
        unit: "\u00B0"}
     ];
 
     var sog = [
-      {value: this.state.data.navigation.speedOverGround,
+      {value: this.state.data.navigation.speedOverGround.value,
        unit: "m/s"}
     ];
 
@@ -106,9 +106,9 @@ var DataList = React.createClass({
 
     var awd = [
       {name: "Angle",
-       value: this.state.data.environment.wind.directionApparent,
+       value: this.state.data.environment.wind.angleApparent.value,
        unit: "\u00B0"},
-      {name: "Speed", value: this.state.data.environment.wind.speedApparent,
+      {name: "Speed", value: this.state.data.environment.wind.speedApparent.value,
        unit: "m/s"}
     ];
 
