@@ -30,7 +30,7 @@ var DataList = React.createClass({
           "longitiude": null
         }
       },
-      "environmental": {
+      "environment": {
         "wind": {
           "directionApparent": null,
           "speedApparent": null
@@ -92,22 +92,22 @@ var DataList = React.createClass({
     ];
 
     var dbk = [
-      {value: this.state.data.environmental.depthBelowKeel.value,
+      {value: this.state.data.environment.depthBelowKeel.value,
         unit: "m"}
     ];
 
     var twd = [
-      {name: "Angle", value: this.state.data.environmental.wind.directionTrue,
+      {name: "Angle", value: this.state.data.environment.wind.directionTrue,
        unit: "\u00B0"},
-      {name: "Speed", value: this.state.data.environmental.wind.speedTrue,
+      {name: "Speed", value: this.state.data.environment.wind.speedTrue,
        unit: "m/s"}
     ];
 
     var awd = [
       {name: "Angle",
-       value: this.state.data.environmental.wind.directionApparent,
+       value: this.state.data.environment.wind.directionApparent,
        unit: "\u00B0"},
-      {name: "Speed", value: this.state.data.environmental.wind.speedApparent,
+      {name: "Speed", value: this.state.data.environment.wind.speedApparent,
        unit: "m/s"}
     ];
 
