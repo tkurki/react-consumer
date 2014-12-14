@@ -42,12 +42,36 @@ var DataList = React.createClass({
     }};
   },
   componentDidMount: function() {
-    var socket = io.connect(this.props.url);
     var that = this;
-    socket.on('signalk', function(data) {
+      var handleTree = function(data) {
       var s = data.self;
+      console.log(data.vessels[s]);
       that.setState({data: data.vessels[s]});
-    });
+    };
+      if (typeof Primus != 'undefined') {
+        console.log(this.props.url)
+        var signalKStream = Primus.connect(this.props.url, {
+          reconnect: {
+            maxDelay: 15000,
+            minDelay: 500,
+            retries: Infinity
+          }
+        });
+
+        signalKStream.on('data', handleTree);
+      } else {
+        connection = new WebSocket(this.props.url);
+        connection.onopen = function(msg) {
+          console.log("open:" + msg);
+        };
+
+        connection.onerror = function(error) {
+          console.log("error:" + msg);
+        };
+        connection.onmessage = function(msg) {
+          handleTree(JSON.parse(msg.data));
+        };
+      }
   },
   render: function() {
     var loc = [
