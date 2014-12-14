@@ -51,7 +51,6 @@ var DataList = React.createClass({
       that.setState({data: data.vessels[s]});
     };
       if (typeof Primus != 'undefined') {
-        console.log(this.props.url)
         var signalKStream = Primus.connect(this.props.url, {
           reconnect: {
             maxDelay: 15000,
