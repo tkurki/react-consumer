@@ -160,7 +160,7 @@ var DataElement = React.createClass({
 });
 
 React.renderComponent(
-    <DataList url={"wss://" + location.hostname + ":3000/signalk/stream"} />,
+    <DataList url={"ws://" + location.hostname + ":3000/signalk/stream"} />,
     document.getElementById('container')
 );
 
