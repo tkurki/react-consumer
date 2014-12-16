@@ -45,33 +45,35 @@ var DataList = React.createClass({
   },
   componentDidMount: function() {
     var that = this;
-      var handleTree = function(data) {
+    var handleTree = function(data) {
       var s = data.self;
-      that.setState({data: data.vessels[s]});
+      var newState = extend(that.state.data, data.vessels[s]);
+      that.setState({data: newState});
     };
-      if (typeof Primus != 'undefined') {
-        var signalKStream = Primus.connect(this.props.url, {
-          reconnect: {
-            maxDelay: 15000,
-            minDelay: 500,
-            retries: Infinity
-          }
-        });
 
-        signalKStream.on('data', handleTree);
-      } else {
-        connection = new WebSocket(this.props.url);
-        connection.onopen = function(msg) {
-          console.log("open:" + msg);
-        };
+    if (typeof Primus != 'undefined') {
+      var signalKStream = Primus.connect(this.props.url, {
+        reconnect: {
+          maxDelay: 15000,
+        minDelay: 500,
+        retries: Infinity
+        }
+      });
 
-        connection.onerror = function(error) {
-          console.log("error:" + msg);
-        };
-        connection.onmessage = function(msg) {
-          handleTree(JSON.parse(msg.data));
-        };
-      }
+      signalKStream.on('data', handleTree);
+    } else {
+      connection = new WebSocket(this.props.url);
+      connection.onopen = function(msg) {
+        console.log("open:" + msg);
+      };
+
+      connection.onerror = function(error) {
+        console.log("error:" + msg);
+      };
+      connection.onmessage = function(msg) {
+        handleTree(JSON.parse(msg.data));
+      };
+    }
   },
   render: function() {
     var loc = [
