@@ -23,31 +23,57 @@ var DataList = React.createClass({
   getInitialState: function() {
     return {data: {
       "navigation": {
-        "courseOverGroundMagnetic": null,
-        "speedOverGround": null,
+        "courseOverGroundTrue": {value:null},
+        "speedOverGround": {value:null},
         "position": {
           "latitude": null,
           "longitiude": null
         }
       },
-      "environmental": {
+      "environment": {
         "wind": {
-          "directionApparent": null,
-          "speedApparent": null
+          "angleApparent": {value:null},
+          "speedApparent": {value:null}
         },
-        "depthBelowKeel": {
-          "value": null
+        "depth": {
+          "belowTransducer": {
+            "value": null
+          }
         }
       }
     }};
   },
   componentDidMount: function() {
-    var socket = io.connect(this.props.url);
     var that = this;
-    socket.on('signalk', function(data) {
+    var handleTree = function(data) {
       var s = data.self;
-      that.setState({data: data.vessels[s]});
-    });
+      var newState = extend(that.state.data, data.vessels[s]);
+      that.setState({data: newState});
+    };
+
+    if (typeof Primus != 'undefined') {
+      var signalKStream = Primus.connect(this.props.url, {
+        reconnect: {
+          maxDelay: 15000,
+        minDelay: 500,
+        retries: Infinity
+        }
+      });
+
+      signalKStream.on('data', handleTree);
+    } else {
+      connection = new WebSocket(this.props.url);
+      connection.onopen = function(msg) {
+        console.log("open:" + msg);
+      };
+
+      connection.onerror = function(error) {
+        console.log("error:" + msg);
+      };
+      connection.onmessage = function(msg) {
+        handleTree(JSON.parse(msg.data));
+      };
+    }
   },
   render: function() {
     var loc = [
@@ -58,32 +84,32 @@ var DataList = React.createClass({
     ];
 
     var cog = [
-      {value: this.state.data.navigation.courseOverGroundMagnetic,
+      {value: this.state.data.navigation.courseOverGroundTrue.value,
        unit: "\u00B0"}
     ];
 
     var sog = [
-      {value: this.state.data.navigation.speedOverGround,
+      {value: this.state.data.navigation.speedOverGround.value,
        unit: "m/s"}
     ];
 
     var dbk = [
-      {value: this.state.data.environmental.depthBelowKeel.value,
+      {value: this.state.data.environment.depth.belowTransducer.value,
         unit: "m"}
     ];
 
     var twd = [
-      {name: "Angle", value: this.state.data.environmental.wind.directionTrue,
+      {name: "Angle", value: this.state.data.environment.wind.directionTrue,
        unit: "\u00B0"},
-      {name: "Speed", value: this.state.data.environmental.wind.speedTrue,
+      {name: "Speed", value: this.state.data.environment.wind.speedTrue,
        unit: "m/s"}
     ];
 
     var awd = [
       {name: "Angle",
-       value: this.state.data.environmental.wind.directionApparent,
+       value: this.state.data.environment.wind.angleApparent.value,
        unit: "\u00B0"},
-      {name: "Speed", value: this.state.data.environmental.wind.speedApparent,
+      {name: "Speed", value: this.state.data.environment.wind.speedApparent.value,
        unit: "m/s"}
     ];
 
@@ -94,7 +120,7 @@ var DataList = React.createClass({
           <DataBox name="Location" data={loc} />
           <DataBox name="Course Over Ground" data={cog} />
           <DataBox name="Speed Over Ground" data={sog} />
-          <DataBox name="Depth Below Keel" data={dbk} />
+          <DataBox name="Depth Below Transducer" data={dbk} />
           <DataBox name="True Wind" data={twd} />
           <DataBox name="Apparent Wind" data={awd} />
         </div>
@@ -136,7 +162,7 @@ var DataElement = React.createClass({
 });
 
 React.renderComponent(
-    <DataList url={"wss://" + location.hostname + ":3000/signalk/stream"} />,
+    <DataList url={"ws://" + location.hostname + ":3000/signalk/stream"} />,
     document.getElementById('container')
 );
 
