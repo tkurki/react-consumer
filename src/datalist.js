@@ -16,100 +16,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @jsx React.DOM
  */
+
+var React = require('react');
+var extend = require('./extend.js');
+var DataBox = require('./databox.js');
 
 var DataList = React.createClass({
   getInitialState: function() {
-    return {data: {
-      "navigation": {
-        "courseOverGroundTrue": {value:null},
-        "speedOverGround": {value:null},
-        "position": {
-          "latitude": null,
-          "longitiude": null
-        }
-      },
-      "environment": {
-        "wind": {
-          "angleApparent": {value:null},
-          "speedApparent": {value:null}
-        },
-        "depth": {
-          "belowTransducer": {
-            "value": null
-          }
-        }
-      }
-    }};
+    return {data: []};
   },
-  componentDidMount: function() {
-    var that = this;
-    var handleTree = function(data) {
-      var s = data.self;
-      var newState = extend(that.state.data, data.vessels[s]);
-      that.setState({data: newState});
-    };
 
-    if (typeof Primus != 'undefined') {
-      var signalKStream = Primus.connect(this.props.url, {
-        reconnect: {
-          maxDelay: 15000,
-        minDelay: 500,
-        retries: Infinity
-        }
-      });
-
-      signalKStream.on('data', handleTree);
-    } else {
-      connection = new WebSocket(this.props.url);
-      connection.onopen = function(msg) {
-        console.log("open:" + msg);
-      };
-
-      connection.onerror = function(error) {
-        console.log("error:" + msg);
-      };
-      connection.onmessage = function(msg) {
-        handleTree(JSON.parse(msg.data));
-      };
+  componentWillReceiveProps: function(nextProps) {
+    if(nextProps.updates) {
+      nextProps.updates.forEach(function(update) {
+        update.values.forEach(function(value) {
+          var data = this.state.data;
+          data[value.path] = value.value;
+          this.setState({data: data});
+        }, this);
+      }, this);
     }
   },
+
   render: function() {
+    var latitude = 0,
+        longitude = 0,
+        position = this.state.data['navigation.position'];
+
+    if(position) {
+      latitude = position.latitude;
+      longitude = position.longitude;
+    }
+
     var loc = [
-      {name: "Latitude", value: this.state.data.navigation.position.latitude,
-       unit: "\u00B0"},
-      {name: "Longitude", value: this.state.data.navigation.position.longitude,
-       unit: "\u00B0"}
+      { name: "Latitude", unit: "\u00B0", value: latitude },
+      { name: "Longitude", unit: "\u00B0", value: longitude }
     ];
 
     var cog = [
-      {value: this.state.data.navigation.courseOverGroundTrue.value,
+      {value: this.state.data['navigation.courseOverGroundTrue'],
        unit: "\u00B0"}
     ];
 
     var sog = [
-      {value: this.state.data.navigation.speedOverGround.value,
+      {value: this.state.data['navigation.speedOverGround'],
        unit: "m/s"}
     ];
 
     var dbk = [
-      {value: this.state.data.environment.depth.belowTransducer.value,
+      {value: this.state.data['environment.depth.belowTransducer'],
         unit: "m"}
     ];
 
     var twd = [
-      {name: "Angle", value: this.state.data.environment.wind.directionTrue,
+      {name: "Angle", value: this.state.data['environment.wind.directionTrue'],
        unit: "\u00B0"},
-      {name: "Speed", value: this.state.data.environment.wind.speedTrue,
+      {name: "Speed", value: this.state.data['environment.wind.speedTrue'],
        unit: "m/s"}
     ];
 
     var awd = [
       {name: "Angle",
-       value: this.state.data.environment.wind.angleApparent.value,
+       value: this.state.data['environment.wind.angleApparent'],
        unit: "\u00B0"},
-      {name: "Speed", value: this.state.data.environment.wind.speedApparent.value,
+      {name: "Speed", value: this.state.data['environment.wind.speedApparent'],
        unit: "m/s"}
     ];
 
@@ -126,43 +97,7 @@ var DataList = React.createClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
-var DataBox = React.createClass({
-  render: function() {
-    var dataElements = this.props.data.map(function(d) {
-      return (
-        <DataElement name={d.name} value={d.value} unit={d.unit} />
-      );
-    });
-    return (
-      <div className="dataBox">
-        {dataElements}
-        <footer>{this.props.name}</footer>
-      </div>
-    );
-  }
-});
-
-var DataElement = React.createClass({
-  render: function() {
-    var v = this.props.value || 0;
-    v = v.toFixed(2);
-    if(this.props.name) {
-      this.props.name += ":";
-    }
-    return (
-      <div className="dataElement">
-        <label>{this.props.name}</label>
-        <span>{v}{this.props.unit}</span>
-      </div>
-    );
-  }
-});
-
-React.renderComponent(
-    <DataList url={"ws://" + location.hostname + ":3000/signalk/stream"} />,
-    document.getElementById('container')
-);
-
+module.exports = DataList;
