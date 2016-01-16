@@ -32,7 +32,7 @@ var ConnectionHandler = React.createClass({
 
   componentDidMount: function() {
     skClient.connectDelta(
-      "demo.signalk.org",
+      window.location.host,
       this.handleDelta,
       this.onConnect,
       console.log
@@ -60,7 +60,7 @@ var ConnectionHandler = React.createClass({
 
   onConnect: function() {
     var t = this;
-    skClient.getSelf("demo.signalk.org").then(function(result) {
+    skClient.getSelf(window.location.host).then(function(result) {
       var selfId = result.body.uuid || result.body.mmsi;
       t.setState({selfId: 'vessels.' + selfId});
       console.log('self', result);
